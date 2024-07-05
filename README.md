@@ -41,37 +41,37 @@ gitops/
 |           |--- ingress.yaml
 |
 |---dev/
-|   |   
-|   |---project1/
-|   |   |--- Chart.yaml
-|   |   |
-|   |   |--- frontend.dev.yaml
-|   |   |    
-|   |   |--- backend.dev.yaml
-|   |   |   
-|   |   |--- admin.dev.yaml
-|   |   |
-|   |   |---templates/
-|   |       |
-|   |       |--- deploy.yaml
-|   |       |
-|   |       |--- service.yaml
-|   |       |
-|   |        |--- ingress.yaml
-|   |---project2/
-|       |--- Chart.yaml
-|       |
-|       |--- frontend.dev.yaml
-|       |    
-|       |--- backend.dev.yaml
-|       |   
-|       |--- admin.dev.yaml
-|       |
-|       |---templates/
-|           |
-|           |--- deploy.yaml
-|           |
-|           |--- service.yaml
-|           |
-|           |--- ingress.yaml
+    |   
+    |---project1/
+    |   |--- Chart.yaml
+    |   |
+    |   |--- frontend.dev.yaml
+    |   |    
+    |   |--- backend.dev.yaml
+    |   |   
+    |   |--- admin.dev.yaml
+    |   |
+    |   |---templates/
+    |       |
+    |       |--- deploy.yaml
+    |       |
+    |       |--- service.yaml
+    |       |
+    |        |--- ingress.yaml
+    |---project2/
+        |--- Chart.yaml
+        |
+        |--- frontend.dev.yaml
+        |    
+        |--- backend.dev.yaml
+        |   
+        |--- admin.dev.yaml
+        |
+        |---templates/
+            |
+            |--- deploy.yaml
+            |
+            |--- service.yaml
+            |
+            |--- ingress.yaml
 ```
