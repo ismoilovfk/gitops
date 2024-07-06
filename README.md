@@ -75,3 +75,19 @@ gitops/
             |
             |--- ingress.yaml
 ```
+## Prerequisites
+* Ensure you have a repository with the public SSH key uploaded. The corresponding private key should be securely stored on your local machine.
+* An ArgoCD cluster with permissions to add repositories and create applications
+* Install the ArgoCd CLI and optionally kubectl for managing applications through the CLI. Alternatively, applications can also be managed via the Argo CD UI.
+
+## Steps to deploy...
+
+1.**Set Up GitOps Repository Structure**
+* Set Up GitOps Repository Structure:
+* Create a Git repository (gitops) where all configuration and deployment manifests will be stored.
+* Organize your repository with separate branches (master, stage, dev...) to manage different environments.
+* Within each environment branch (master and dev), organize projects (project1, project2, etc.) representing different applications or services.
+* Each project directory should contain:
+    *   A Chart.yaml file for Helm charts metadata.
+    * Application manifests (frontend.master.yaml, backend.master.yaml, etc., for master branch; frontend.dev.yaml, backend.dev.yaml, etc., for dev branch).
+    * A templates/ directory containing Kubernetes manifests (deploy.yaml, service.yaml, ingress.yaml, etc.) for deployment configurations.
