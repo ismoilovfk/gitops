@@ -82,8 +82,7 @@ gitops/
 
 ## Steps to deploy...
 
-1.**Set Up GitOps Repository Structure**
-* Set Up GitOps Repository Structure:
+1.**Set Up GitOps Repository Structure:**
 * Create a Git repository (gitops) where all configuration and deployment manifests will be stored.
 * Organize your repository with separate branches (master, stage, dev...) to manage different environments.
 * Within each environment branch (master and dev), organize projects (project1, project2, etc.) representing different applications or services.
