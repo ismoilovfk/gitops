@@ -95,12 +95,12 @@ gitops/
 argocd login my-argocd.com
 argocd repo add git@github.com:ismoilovfk/gitops.git  --ssh-private-key-path .ssh/id_rsa
 argocd proj create production-proj --allow-namespaced-resource proj1-prod
-'''
+```
 3. ** Create ns and applications in argocd one by one **
 ```sh
 kubectl create ns proj1-prod
 kubectl apply -f single.application.yaml
-'''
+```
 ## Argcocd application for GitOps...
 ```sh
 apiVersion: argoproj.io/v1alpha1
@@ -124,4 +124,4 @@ spec:
     automated:
       prune: true
       selfHeal: true
-'''
+```
