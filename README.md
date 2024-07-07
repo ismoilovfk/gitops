@@ -102,6 +102,7 @@ kubectl create ns proj1-dev
 kubectl apply -f single.application.yaml
 ```
 ## Argcocd application for GitOps...
+
 ```sh
 apiVersion: argoproj.io/v1alpha1
 kind: Application
