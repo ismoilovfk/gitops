@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: backend.master
+  namespace: argocd
+spec:
+  destination:
+    namespace: proj1-prod
+    server: https://kubernetes.default.svc
+  project: production-proj
+  source:
+    helm:
+      valueFiles:
+        - backend.master.yaml
+    path: project1
+    repoURL: git@github.com:ismoilovfk/gitops.git
+    targetRevision: master
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

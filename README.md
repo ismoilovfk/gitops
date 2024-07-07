@@ -78,7 +78,7 @@ gitops/
 ## Prerequisites
 * Ensure you have a repository with the public SSH key uploaded. The corresponding private key should be securely stored on your local machine.
 * An ArgoCD cluster with permissions to add repositories and create applications
-* Install the ArgoCd CLI and optionally kubectl for managing applications through the CLI. Alternatively, applications can also be managed via the Argo CD UI.
+* ArgoCd CLI and kubectl
 
 ## Steps to deploy...
 
@@ -90,3 +90,38 @@ gitops/
     *   A Chart.yaml file for Helm charts metadata.
     * Application manifests (frontend.master.yaml, backend.master.yaml, etc., for master branch; frontend.dev.yaml, backend.dev.yaml, etc., for dev branch).
     * A templates/ directory containing Kubernetes manifests (deploy.yaml, service.yaml, ingress.yaml, etc.) for deployment configurations.
+2. ** Connect our repo to argocd and create proj in argocd **
+'''sh
+argocd login my-argocd.com
+argocd repo add git@github.com:ismoilovfk/gitops.git  --ssh-private-key-path .ssh/id_rsa
+argocd proj create production-proj --allow-namespaced-resource proj1-prod
+'''
+3. ** Create ns and applications in argocd one by one **
+'''sh
+kubectl create ns proj1-prod
+kubectl apply -f single.application.yaml
+'''
+## Argcocd application for GitOps...
+'''sh
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: backend.master
+  namespace: argocd
+spec:
+  destination:
+    namespace: proj1-prod
+    server: https://kubernetes.default.svc
+  project: production-proj
+  source:
+    helm:
+      valueFiles:
+        - backend.master.yaml
+    path: project1
+    repoURL: git@github.com:ismoilovfk/gitops.git
+    targetRevision: master
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+'''
