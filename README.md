@@ -94,11 +94,11 @@ gitops/
 ```sh
 argocd login my-argocd.com
 argocd repo add git@github.com:ismoilovfk/gitops.git  --ssh-private-key-path .ssh/id_rsa
-argocd proj create production-proj --allow-namespaced-resource proj1-prod
+argocd proj create dev-proj --allow-namespaced-resource proj1-dev
 ```
 3. ** Create ns and applications in argocd one by one **
 ```sh
-kubectl create ns proj1-prod
+kubectl create ns proj1-dev
 kubectl apply -f single.application.yaml
 ```
 ## Argcocd application for GitOps...
@@ -110,16 +110,16 @@ metadata:
   namespace: argocd
 spec:
   destination:
-    namespace: proj1-prod
+    namespace: proj1-dev
     server: https://kubernetes.default.svc
-  project: production-proj
+  project: dev-proj
   source:
     helm:
       valueFiles:
-        - backend.master.yaml
+        - backend.dev.yaml
     path: project1
     repoURL: git@github.com:ismoilovfk/gitops.git
-    targetRevision: master
+    targetRevision: dev
   syncPolicy:
     automated:
       prune: true
