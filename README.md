@@ -106,7 +106,7 @@ kubectl apply -f single.application.yaml
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: backend.master
+  name: backend.dev
   namespace: argocd
 spec:
   destination:
