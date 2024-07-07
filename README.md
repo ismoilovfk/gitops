@@ -91,18 +91,18 @@ gitops/
     * Application manifests (frontend.master.yaml, backend.master.yaml, etc., for master branch; frontend.dev.yaml, backend.dev.yaml, etc., for dev branch).
     * A templates/ directory containing Kubernetes manifests (deploy.yaml, service.yaml, ingress.yaml, etc.) for deployment configurations.
 2. ** Connect our repo to argocd and create proj in argocd **
-'''sh
+```sh
 argocd login my-argocd.com
 argocd repo add git@github.com:ismoilovfk/gitops.git  --ssh-private-key-path .ssh/id_rsa
 argocd proj create production-proj --allow-namespaced-resource proj1-prod
 '''
 3. ** Create ns and applications in argocd one by one **
-'''sh
+```sh
 kubectl create ns proj1-prod
 kubectl apply -f single.application.yaml
 '''
 ## Argcocd application for GitOps...
-'''sh
+```sh
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
