@@ -1,0 +1,10 @@
+stage: master
+server: https://kubernetes.default.svc
+project: production-proj
+namespace: proj1-prod
+path: project1
+repo: git@github.com:ismoilovfk/gitops.git
+apps:
+  - admin
+  - backend
+  - frontend
