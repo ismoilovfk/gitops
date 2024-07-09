@@ -126,3 +126,28 @@ spec:
       selfHeal: true    -- Automatically correct drift by synchronizing the live state with the desired state defined in the Git repository.
 
 ```
+
+## Automation of Creating ArgoCD Applications for GitOps
+
+When configuring GitOps with ArgoCD, managing dozens of projects and hundreds of applications manually can become cumbersome. To streamline this process, using a Helm chart can simplify the creation of hundreds of applications effortlessly.
+
+
+## Steps to deploy...
+
+```sh
+1. Configure the Values file with the necessary application details:
+   stage: master
+   server: https://kubernetes.default.svc
+   project: production-proj
+   namespace: proj1-prod
+   path: project1
+   repo: git@github.com:ismoilovfk/gitops.git
+   apps:
+     - admin
+     - backend
+     - frontend
+
+2. Automate the creation of multiple applications to avoid manual creation of hundreds of applications.
+
+
+```
