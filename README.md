@@ -147,7 +147,12 @@ When configuring GitOps with ArgoCD, managing dozens of projects and hundreds of
      - backend
      - frontend
 
-2. Automate the creation of multiple applications to avoid manual creation of hundreds of applications.
+2. Create application for Automate the creation of multiple applications to avoid manual creation of hundreds of applications:
 
+configure argocd-app-creator.yaml
+
+and
+
+kubectl apply -f argocd-app-creator.yaml
 
 ```
