@@ -84,45 +84,75 @@ gitops/
 
 1.**Set Up GitOps Repository Structure:**
 * Create a Git repository (gitops) where all configuration and deployment manifests will be stored.
-* Organize your repository with separate branches (master, stage, dev...) to manage different environments.
-* Within each environment branch (master and dev), organize projects (project1, project2, etc.) representing different applications or services.
+* Organize your repository with separate branches (dev, stage, dev...) to manage different environments.
+* Within each environment branch (dev and dev), organize projects (project1, project2, etc.) representing different applications or services.
 * Each project directory should contain:
     *   A Chart.yaml file for Helm charts metadata.
-    * Application manifests (frontend.master.yaml, backend.master.yaml, etc., for master branch; frontend.dev.yaml, backend.dev.yaml, etc., for dev branch).
+    * Application manifests (frontend.dev.yaml, backend.dev.yaml, etc., for dev branch; frontend.dev.yaml, backend.dev.yaml, etc., for dev branch).
     * A templates/ directory containing Kubernetes manifests (deploy.yaml, service.yaml, ingress.yaml, etc.) for deployment configurations.
 2. ** Connect our repo to argocd and create proj in argocd **
 ```sh
 argocd login my-argocd.com
 argocd repo add git@github.com:ismoilovfk/gitops.git  --ssh-private-key-path .ssh/id_rsa
-argocd proj create dev-proj --allow-namespaced-resource proj1-dev
+argocd proj create production-proj --allow-namespaced-resource proj1-prod
 ```
 3. ** Create ns and applications in argocd one by one **
 ```sh
-kubectl create ns proj1-dev
+kubectl create ns proj1-prod
 kubectl apply -f single.application.yaml
 ```
 ## Argcocd application for GitOps...
-
 ```sh
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: backend.dev
-  namespace: argocd
+  name: backend.dev  -- Application Name in ArgoCD
+  namespace: argocd     -- ArgoCD application namespace. Usually, all applications are located in the argocd namespace, but you locate them anywhere.
 spec:
   destination:
-    namespace: proj1-dev
-    server: https://kubernetes.default.svc
-  project: dev-proj
+    namespace: proj1-prod                  -- Namespace where Service shoud locate
+    server: https://kubernetes.default.svc -- K8s address in argocd
+  project: production-proj                 -- Project name in ArgoCD. This will not affect the application directly.
   source:
     helm:
       valueFiles:
-        - backend.dev.yaml
-    path: project1
-    repoURL: git@github.com:ismoilovfk/gitops.git
-    targetRevision: dev
+        - backend.dev.yaml              -- Values file. I would recommend adding the stage in the filename. This adds an extra level of protection, ensuring you don't accidentally change something while thinking you're in a different branch. Including the branch and stage in the filename provides clarity on where and what stage you are making changes.
+      path: project1                      -- Path to the project directory. This specifies the location of the project's source code and configuration files within the repository.
+    repoURL: git@github.com:ismoilovfk/gitops.git  -- SSH link to your Git repository
+    targetRevision: dev                         -- The branch to track. This specifies which branch in the repository ArgoCD should monitor for updates and changes.
   syncPolicy:
     automated:
-      prune: true
-      selfHeal: true
+      prune: true       -- Automatically remove resources that are no longer defined in the Git repository.
+      selfHeal: true    -- Automatically correct drift by synchronizing the live state with the desired state defined in the Git repository.
+
+```
+
+## Automation of Creating ArgoCD Applications for GitOps
+
+When configuring GitOps with ArgoCD, managing dozens of projects and hundreds of applications manually can become cumbersome. To streamline this process, using a Helm chart can simplify the creation of hundreds of applications effortlessly.
+
+
+## Steps to deploy...
+
+```sh
+1. Configure the Values file with the necessary application details:
+   stage: dev
+   server: https://kubernetes.default.svc
+   project: production-proj
+   namespace: proj1-prod
+   path: project1
+   repo: git@github.com:ismoilovfk/gitops.git
+   apps:
+     - admin
+     - backend
+     - frontend
+
+2. Create application for Automate the creation of multiple applications to avoid manual creation of hundreds of applications:
+
+configure argocd-app-creator.yaml
+
+and
+
+kubectl apply -f argocd-app-creator.yaml
+
 ```
