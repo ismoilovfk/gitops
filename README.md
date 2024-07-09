@@ -106,22 +106,23 @@ kubectl apply -f single.application.yaml
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: backend.master
-  namespace: argocd
+  name: backend.master  -- Application Name in ArgoCD
+  namespace: argocd     -- ArgoCD application namespace. Usually, all applications are located in the argocd namespace, but you locate them anywhere.
 spec:
   destination:
-    namespace: proj1-prod
-    server: https://kubernetes.default.svc
-  project: production-proj
+    namespace: proj1-prod                  -- Namespace where Service shoud locate
+    server: https://kubernetes.default.svc -- K8s address in argocd
+  project: production-proj                 -- Project name in ArgoCD. This will not affect the application directly.
   source:
     helm:
       valueFiles:
-        - backend.master.yaml
-    path: project1
-    repoURL: git@github.com:ismoilovfk/gitops.git
-    targetRevision: master
+        - backend.master.yaml              -- Values file. I would recommend adding the stage in the filename. This adds an extra level of protection, ensuring you don't accidentally change something while thinking you're in a different branch. Including the branch and stage in the filename provides clarity on where and what stage you are making changes.
+      path: project1                      -- Path to the project directory. This specifies the location of the project's source code and configuration files within the repository.
+    repoURL: git@github.com:ismoilovfk/gitops.git  -- SSH link to your Git repository
+    targetRevision: master                         -- The branch to track. This specifies which branch in the repository ArgoCD should monitor for updates and changes.
   syncPolicy:
     automated:
-      prune: true
-      selfHeal: true
+      prune: true       -- Automatically remove resources that are no longer defined in the Git repository.
+      selfHeal: true    -- Automatically correct drift by synchronizing the live state with the desired state defined in the Git repository.
+
 ```
